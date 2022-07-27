@@ -1,24 +1,30 @@
-import { getWhales, getWhaleSightings } from "./data.js"
+import { getWhales, getWhaleSightings } from "./data.js";
 
 type Whale = {
-  species: string
-  weightInKg: number
-  likesToEat?: string
-}
+  species: string;
+  weightInKg: number;
+  likesToEat?: string;
+  trainingSessionsAttended?: number;
+  tuskLengthInCm?: number;
+  finLengthInCm?: number;
+};
 
-const whales: any = getWhales()
+const whales: Record<string, Whale> = getWhales();
 
-const whaleSightings: any = getWhaleSightings()
+const whaleSightings: Record<string, string[]> = getWhaleSightings();
 
 function getWhaleNamesBySpecies(species: string): string[] {
-  return Object.keys(whales).filter(name => whales[name].species === species)
+  return Object.keys(whales).filter(
+    (name) => whales[name]?.species === species
+  );
 }
 
 function greeting(name: string, whale: Whale): string {
-  return `Hi, I'm ${name}, a ${whale.weightInKg}kg ${whale.species}.`
+  return `Hi, I'm ${name}, a ${whale.weightInKg}kg ${whale.species}.`;
 }
 
-getWhaleNamesBySpecies("Skiller Whale").forEach(name => {
-  console.log(greeting(name, whales[name]))
-  console.log("Comments:", whaleSightings[name].join(", "))
-})
+getWhaleNamesBySpecies("Skiller Whale").forEach((name) => {
+  if (whales[name] !== undefined) console.log(greeting(name, whales[name]!));
+  if (whaleSightings[name] !== undefined)
+    console.log("Comments:", whaleSightings[name]?.join(", "));
+});
